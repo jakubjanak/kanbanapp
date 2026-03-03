@@ -11,7 +11,7 @@ export function Header() {
                         Smazat všechny karty
                     </button>
                     <button className="px-4 py-2 bg-kanban-accent text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
-                        +Přidat kartu
+                        +Přidat sloupec
                     </button>
                 </div>
             </div>

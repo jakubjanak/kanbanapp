@@ -32,6 +32,7 @@ export interface CardModalProps {
     card: Card;
     onSave: (updatedCard: Card) => void;
     onClose: () => void;
+    onDelete: () => void;
 }
 
 export interface AddColumnModalProps {
@@ -70,4 +71,8 @@ export interface UseKanbanReturn {
     updateCard: (cardId: string, updates: Partial<Card>) => void;
     deleteCard: (cardId: string, columnId: string) => void;
     moveCard: (cardId: string, fromColumn: string, toColumn: string) => void;
+}
+
+export interface EmptyStateProps {
+    message?: string;
 }

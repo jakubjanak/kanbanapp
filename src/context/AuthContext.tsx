@@ -12,11 +12,14 @@ import { auth } from "../firebase/firebase";
 
 interface AuthContextValue {
     user: User | null;
+    isGuest: boolean;
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
     signInWithEmail: (email: string, password: string) => Promise<void>;
     signUpWithEmail: (email: string, password: string) => Promise<void>;
     signOut: () => Promise<void>;
+    continueAsGuest: () => void;
+    leaveGuest: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -24,10 +27,16 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isGuest, setIsGuest] = useState(() => localStorage.getItem("kanban-guest") === "true");
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (u) => {
             setUser(u);
+            if (u) {
+                // Logged in — clear guest flag
+                localStorage.removeItem("kanban-guest");
+                setIsGuest(false);
+            }
             setLoading(false);
         });
         return unsubscribe;
@@ -50,8 +59,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await firebaseSignOut(auth);
     };
 
+    const continueAsGuest = () => {
+        localStorage.setItem("kanban-guest", "true");
+        setIsGuest(true);
+    };
+
+    const leaveGuest = () => {
+        localStorage.removeItem("kanban-guest");
+        setIsGuest(false);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, signInWithGoogle, signInWithEmail, signUpWithEmail, signOut }}>
+        <AuthContext.Provider value={{ user, isGuest, loading, signInWithGoogle, signInWithEmail, signUpWithEmail, signOut, continueAsGuest, leaveGuest }}>
             {children}
         </AuthContext.Provider>
     );

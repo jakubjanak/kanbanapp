@@ -10,7 +10,7 @@ import { useKanban } from "./hooks/useKanban";
 import type { Card } from "./types/kanban";
 
 function KanbanApp() {
-    const { user, loading } = useAuth();
+    const { user, isGuest, loading } = useAuth();
     const { columns, addColumn, deleteColumn, updateColumn, addCard, updateCard, deleteCard, moveCard, clearAll } = useKanban();
     const [showAddColumnModal, setShowAddColumnModal] = useState(false);
     const [selectedCard, setSelectedCard] = useState<{ card: Card; columnId: string } | null>(null);
@@ -23,7 +23,7 @@ function KanbanApp() {
         );
     }
 
-    if (!user) {
+    if (!user && !isGuest) {
         return <LoginPage />;
     }
 

@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
 export function LoginPage() {
-    const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+    const { signInWithGoogle, signInWithEmail, signUpWithEmail, continueAsGuest } = useAuth();
     const [isSignUp, setIsSignUp] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleEmailSubmit = async (e: React.FormEvent) => {
+    const handleEmailSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         setError("");
         setLoading(true);
@@ -129,6 +129,13 @@ export function LoginPage() {
                         </button>
                     </p>
                 </div>
+
+                <button
+                    onClick={continueAsGuest}
+                    className="w-full mt-4 px-4 py-3 text-sm text-kanban-muted hover:text-kanban-text transition-colors cursor-pointer text-center"
+                >
+                    Pokračovat jako host →
+                </button>
             </div>
         </div>
     );

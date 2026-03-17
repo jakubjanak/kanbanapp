@@ -1,7 +1,9 @@
 import { useState } from "react";
 import type { HeaderProps } from "../../types/kanban";
+import { useAuth } from "../../context/AuthContext";
 
 export function Header({ onAddColumn, onClearAll }: HeaderProps) {
+    const { user, signOut } = useAuth();
     const [showConfirm, setShowConfirm] = useState(false);
 
     return (
@@ -25,6 +27,23 @@ export function Header({ onAddColumn, onClearAll }: HeaderProps) {
                         >
                             + Přidat sloupec
                         </button>
+
+                        {/* User avatar + sign out */}
+                        <div className="flex items-center gap-2 pl-3 border-l border-kanban-border">
+                            {user?.photoURL ? (
+                                <img src={user.photoURL} alt="avatar" className="w-8 h-8 rounded-full object-cover" />
+                            ) : (
+                                <div className="w-8 h-8 rounded-full bg-kanban-accent flex items-center justify-center text-white text-sm font-medium">
+                                    {(user?.displayName ?? user?.email ?? "U")[0].toUpperCase()}
+                                </div>
+                            )}
+                            <button
+                                onClick={signOut}
+                                className="text-sm text-kanban-muted hover:text-kanban-text transition-colors cursor-pointer"
+                            >
+                                Odhlásit
+                            </button>
+                        </div>
                     </div>
                 </div>
             </header>

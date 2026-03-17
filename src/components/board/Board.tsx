@@ -1,7 +1,7 @@
 import type { BoardProps } from "../../types/kanban";
 import { Column } from "./Column";
 
-export function Board({ columns, onCardClick, onAddCard, onMoveCard, onDeleteCard }: BoardProps) {
+export function Board({ columns, onCardClick, onAddCard, onMoveCard, onDeleteCard, onDeleteColumn, onUpdateColumn }: BoardProps) {
     return (
         <main className="p-6 overflow-x-auto">
             <div className="max-w-350 mx-auto flex gap-6 pb-6">
@@ -13,6 +13,8 @@ export function Board({ columns, onCardClick, onAddCard, onMoveCard, onDeleteCar
                         onAddCard={onAddCard}
                         onMoveCard={onMoveCard}
                         onDeleteCard={onDeleteCard}
+                        onDeleteColumn={onDeleteColumn}
+                        onUpdateColumn={onUpdateColumn}
                     />
                 ))}
             </div>

@@ -13,14 +13,16 @@ export function useKanban(): UseKanbanReturn {
         setColumns(prev => prev.filter(col => col.id !== columnId));
     };
 
-    const addCard = (columnId: string, title: string) => {
+    const updateColumn = (columnId: string, title: string, color: string) => {
+        setColumns(prev => prev.map(col =>
+            col.id === columnId ? { ...col, title, color } : col
+        ));
+    };
+
+    const addCard = (columnId: string, data: Omit<Card, "id" | "createdAt">) => {
         const newCard: Card = {
+            ...data,
             id: crypto.randomUUID(),
-            title,
-            description: "",
-            priority: "medium",
-            labels: [],
-            dueDate: null,
             createdAt: new Date(),
         };
         setColumns(prev => prev.map(col =>
@@ -53,5 +55,7 @@ export function useKanban(): UseKanbanReturn {
         });
     };
 
-    return { columns, addColumn, deleteColumn, addCard, updateCard, deleteCard, moveCard };
+    const clearAll = () => setColumns([]);
+
+    return { columns, addColumn, deleteColumn, updateColumn, addCard, updateCard, deleteCard, moveCard, clearAll };
 }

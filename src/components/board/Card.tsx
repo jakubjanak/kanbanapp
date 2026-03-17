@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { CardProps } from "../../types/kanban";
 
 const priorityColor = {
@@ -6,14 +7,19 @@ const priorityColor = {
     high: "bg-red-500",
 };
 
-export function Card({ card, onClick, onDelete }: CardProps) {
+export function Card({ card, onClick, onDelete, onDragStart }: CardProps) {
+    const [isDragging, setIsDragging] = useState(false);
+
     const formattedDate = card.dueDate
         ? new Date(card.dueDate).toLocaleDateString("cs-CZ")
         : null;
 
     return (
         <div
-            className="bg-white border border-kanban-border rounded-xl p-4 hover:shadow-md hover:border-kanban-accent/50 transition-all cursor-pointer group"
+            draggable
+            onDragStart={e => { setIsDragging(true); onDragStart(e); }}
+            onDragEnd={() => setIsDragging(false)}
+            className={`bg-white border border-kanban-border rounded-xl p-4 hover:shadow-md hover:border-kanban-accent/50 transition-all cursor-grab active:cursor-grabbing group ${isDragging ? "opacity-40" : ""}`}
             onClick={onClick}
         >
             <div className="flex items-start justify-between">

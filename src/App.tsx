@@ -8,7 +8,7 @@ import { useKanban } from "./hooks/useKanban";
 import type { Card } from "./types/kanban";
 
 function App() {
-    const { columns, addColumn, addCard, updateCard, deleteCard, moveCard } = useKanban();
+    const { columns, addColumn, deleteColumn, updateColumn, addCard, updateCard, deleteCard, moveCard, clearAll } = useKanban();
     const [showAddColumnModal, setShowAddColumnModal] = useState(false);
     const [selectedCard, setSelectedCard] = useState<{ card: Card; columnId: string } | null>(null);
 
@@ -19,13 +19,15 @@ function App() {
 
     return (
         <AppLayout>
-            <Header onAddColumn={() => setShowAddColumnModal(true)} />
+            <Header onAddColumn={() => setShowAddColumnModal(true)} onClearAll={clearAll} />
             <Board
                 columns={columns}
                 onCardClick={handleCardClick}
                 onAddCard={addCard}
                 onMoveCard={moveCard}
                 onDeleteCard={deleteCard}
+                onDeleteColumn={deleteColumn}
+                onUpdateColumn={updateColumn}
             />
 
             {showAddColumnModal && (
